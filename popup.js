@@ -13,6 +13,18 @@ async function load_lib(lib_name) {
 };
 
 
+function prepare(lib, action, options) {
+  let request = {
+    lib: lib,
+    action: action,
+  };
+  options = document.getElementById('options').innerText;
+  request.payload = Popup[lib][action].prepare(options);
+  
+  return request;
+}
+
+
 function callback(response) {
   log(response);
   Popup[response.request.lib][response.request.action].callback(response);
@@ -28,11 +40,7 @@ for(let i = 0; i < action_buttons.length; i++) {
   const action = action_button.dataset.action;
 
   action_button.addEventListener('click', async function() {
-    const request = {
-      lib: lib,
-      action: action,
-      options: document.getElementById('options').innerText
-    };
+    const request = prepare(lib, action, options);
     
     chrome.tabs.query({active:true, currentWindow:true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, request, callback);

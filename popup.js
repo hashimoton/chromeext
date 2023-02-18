@@ -1,6 +1,6 @@
 // popup.js
 
-alert('popup.js!'); // Cannot use console.log() here.
+alert('popup.js'); // Cannot use console.log() here.
 
 import {log, load_options} from "./common.js";
 load_options();
